@@ -5,9 +5,14 @@ from django.utils import timezone
 
 @register.inclusion_tag("blog/category_sidebar.html")
 def all_category_sidebar():
+    time_now = timezone.now()
+    posts = Post.objects.exclude(published_date__gt=time_now).filter(status=True)
+    category_dict = {}
     category = Category.objects.all()
+    for name in category :
+        category_dict[name] = posts.filter(category=name).count() 
     return {
-        "category": category
+        "category": category_dict
     }
     
     

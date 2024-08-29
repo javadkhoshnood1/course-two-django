@@ -28,3 +28,10 @@ def single_blog(request,id):
             post_prev = get_object_or_404(Post,id=item.id)
             print(post_prev.id)
     return render(request,"blog/single_blog.html",{"post" :post_single ,"post_prev":post_prev,"post_next":post_next})
+
+
+
+def category_blog(request,cat_name):
+    time_now = timezone.now()
+    posts = Post.objects.exclude(published_date__gt=time_now).filter(status=True).filter(category__name=cat_name)
+    return render(request,"blog/all_blog.html",{"posts" :posts})
