@@ -1,0 +1,25 @@
+
+{% load static %}
+<div class="single-sidebar-widget ads-widget">
+    <a href="#"><img class="img-fluid" src="{% static 'img/blog/ads-banner.jpg' %}" alt=""></a>
+</div>
+<div class="single-sidebar-widget post-category-widget">
+    <h4 class="category-title">Post Catgories</h4>
+    <ul class="cat-list">
+     {% for cat in category %}
+     
+     <li>
+        <a href="#" class="d-flex justify-content-between">
+            <p>{{cat.name}}</p>
+            <p>{{cat.post_set.count}}</p>
+        </a>
+    </li>
+
+
+     {% endfor %}
+       
+       
+       
+           															
+    </ul>
+</div>	
