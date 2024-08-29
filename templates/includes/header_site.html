@@ -33,7 +33,7 @@
               <li class="menu-has-children"><a href="{% url 'blog:all' %}">Blog</a>
                 <ul>
                   <li><a href="{% url 'blog:all'%}">Blog Home</a></li>
-                  <li><a href="blog-single.html">Blog Single</a></li>
+                  <li><a href="{% url 'blog:single' 1 %}">Blog Single</a></li>
                 </ul>
               </li>	
               <li class="menu-has-children"><a href="">Pages</a>
