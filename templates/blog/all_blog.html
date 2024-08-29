@@ -116,7 +116,7 @@ all blog page
                         <p class="excert">
                             {{post.content}}
                         </p>
-                        <a href="blog-single.html" class="primary-btn">View More</a>
+                        <a href="{% url 'blog:single' post.id %}" class="primary-btn">View More</a>
                     </div>
                 </div>
                 {% endfor %}
