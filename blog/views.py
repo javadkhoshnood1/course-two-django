@@ -1,13 +1,35 @@
 from django.shortcuts import render,get_object_or_404
 from .models import Post
 from django.utils import timezone
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 # Create your views here.
 
 
-def all_blogs_view(request):
+def all_blogs_view(request,**kwargs):
     time_now = timezone.now()
     posts = Post.objects.exclude(published_date__gt=time_now).filter(status=True)
-    return render(request,"blog/all_blog.html",{"posts" :posts})
+    cat_name = ""
+    username = ""
+    if kwargs.get("cat_name") != None:
+        cat_name = kwargs.get("cat_name")
+        posts = posts.filter(category__name=kwargs.get("cat_name"))
+        
+    if kwargs.get("username") != None:
+        username = kwargs.get("username")
+        posts = posts.filter(author__username=kwargs.get("username"))
+    
+    posts = Paginator(posts,2)
+    try :
+        page_number = request.GET.get("page")
+        posts = posts.get_page(page_number)
+    
+    except PageNotAnInteger:
+        posts = posts.get_page(1)
+    except EmptyPage :
+        posts = posts.get_page(1)
+        
+    
+    return render(request,"blog/all_blog.html",{"posts" :posts,"cat_name":cat_name ,"username" :username})
 
 
 
@@ -31,7 +53,15 @@ def single_blog(request,id):
 
 
 
-def category_blog(request,cat_name):
+def search_blog_view(request):
     time_now = timezone.now()
-    posts = Post.objects.exclude(published_date__gt=time_now).filter(status=True).filter(category__name=cat_name)
-    return render(request,"blog/all_blog.html",{"posts" :posts})
+    posts = Post.objects.exclude(published_date__gt=time_now).filter(status=True)
+    if request.method == "GET":
+        if s:= request.GET.get("search_word"):
+            search_words = s
+            posts = posts.filter(content__contains=s)
+    
+    return render(request,"blog/all_blog.html",{"posts" :posts,"search_word":search_words})
+       
+            
+            
