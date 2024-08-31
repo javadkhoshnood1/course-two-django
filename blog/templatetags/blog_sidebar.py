@@ -20,5 +20,5 @@ def all_category_sidebar():
 @register.inclusion_tag("blog/last_post_sidebar.html")
 def last_post_sidebar():
     time_now = timezone.now()
-    last_posts = Post.objects.exclude(published_date__gt=time_now).filter(status=True).order_by("-published_date")
+    last_posts = Post.objects.exclude(published_date__gt=time_now).filter(status=True).order_by("-published_date")[:3]
     return {"last_posts" :last_posts}
