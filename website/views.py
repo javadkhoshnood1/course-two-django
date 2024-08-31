@@ -8,7 +8,6 @@ def contact_page_view(request):
         form = ContactForm(request.POST)
         if form.is_valid:
             form.save()
-            
             messages.success(request, "add message in database")
         else:
             messages.error(request, "not saved message and try again")
