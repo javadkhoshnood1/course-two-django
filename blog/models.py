@@ -36,3 +36,24 @@ class Category(models.Model):
     class Meta:
         verbose_name = "دسته بندی "
         verbose_name_plural = "دسته بندی ها" 
+        
+        
+        
+        
+        
+class Comment(models.Model):
+    name = models.CharField(max_length=255)
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
+    subject = models.CharField(max_length=255)
+    message = models.TextField()
+    email = models.EmailField()
+    allow = models.BooleanField(default=False)
+    created_date = models.DateTimeField(auto_now_add=True,null=True)
+    updated_date = models.DateTimeField(auto_now=True,null=True)
+    
+    
+    
+    class Meta:
+        verbose_name = "گامنت"
+        verbose_name_plural = "کامنت ها "
+    
