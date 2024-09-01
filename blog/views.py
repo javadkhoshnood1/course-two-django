@@ -10,9 +10,15 @@ def all_blogs_view(request,**kwargs):
     posts = Post.objects.exclude(published_date__gt=time_now).filter(status=True)
     cat_name = ""
     username = ""
+    tag_name= ""
     if kwargs.get("cat_name") != None:
         cat_name = kwargs.get("cat_name")
         posts = posts.filter(category__name=kwargs.get("cat_name"))
+    
+    if kwargs.get("tag_name") != None:
+        tag_name = kwargs.get("tag_name")
+        print(tag_name)
+        posts = posts.filter(tag__name__in=[kwargs.get("tag_name")])
         
     if kwargs.get("username") != None:
         username = kwargs.get("username")
@@ -29,7 +35,7 @@ def all_blogs_view(request,**kwargs):
         posts = posts.get_page(1)
         
     
-    return render(request,"blog/all_blog.html",{"posts" :posts,"cat_name":cat_name ,"username" :username})
+    return render(request,"blog/all_blog.html",{"posts" :posts,"cat_name":cat_name ,"username" :username,"tag_name":tag_name})
 
 
 
