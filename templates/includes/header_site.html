@@ -6,8 +6,17 @@
           <div class="row align-items-center">
               <div class="col-lg-6 col-sm-6 col-6 header-top-left">
                   <ul>
-                      <li><a href="#">Visit Us</a></li>
-                      <li><a href="#">Buy Tickets</a></li>
+
+                    {% if request.user.is_authenticated %}
+                    <li><a href="#">profile <span class="text-success">{{request.user.username}}</span></a></li>
+                      <li><a href="{% url 'accounts:logout' %}" class="text-danger">logout</a></li>  
+
+                    {% else %}
+                      <li><a href="{% url 'accounts:login' %}">login</a></li>
+                      <li><a href="{% url 'accounts:signup' %}">sign up</a></li>
+
+                    {% endif %}
+                      
                   </ul>			
               </div>
               <div class="col-lg-6 col-sm-6 col-6 header-top-right">

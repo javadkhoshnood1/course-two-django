@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # my_apps
     'home',
     'blog',
+    'accounts',
     
     'website'
 ]
