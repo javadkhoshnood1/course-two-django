@@ -61,3 +61,47 @@ def signup_view(request):
         return render(request,"accounts/signup.html")    
     else:       
         return render(request,"accounts/signup.html")
+    
+    
+    
+    
+def reset_password_view(request):
+    if not request.user.is_authenticated:
+        if request.method == "POST":
+            username = request.POST.get("username")
+            password1 = request.POST.get("password1")
+            password2 = request.POST.get("password2")
+            if username and password1 and password2:
+                if "@" in username:
+                   try :
+                        user = User.objects.get(email=username)
+                        if user is not None:
+                            if password1 == password2:
+                                user.set_password(password1)
+                                user.save()
+                                messages.success(request,"reset password with email")
+                                return redirect("/")
+                            else :
+                                messages.error(request,"password1 and password2 not same in email")
+                   except:
+                        messages.error(request,"user with this email not found")
+                else:
+                    try :
+                        user = User.objects.get(username=username)
+                        if user is not None:
+                            if password1 == password2 :
+                                user.set_password(password1)
+                                user.save()
+                                messages.success(request,"reset password with username")
+                                return redirect("/")
+                            else:
+                                messages.error(request,"password1 and password2 not same in username")
+                    except:
+                        messages.error(request,"user with this username not found")
+
+                    
+                        
+            else:
+               messages.error(request,"please enter all fields")
+        return render(request,"accounts/reset_password.html")        
+    return render(request,"accounts/reset_password.html")
