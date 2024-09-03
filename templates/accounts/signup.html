@@ -31,13 +31,13 @@
        <input type="text" required name="username"> 
 
       </div> 
-       
-       <div class="inputBox"> 
-        <label style="color: white">first name</label> 
+      <div class="inputBox">
+        <label style="color: white">email</label> 
 
-        <input type="text" required name="first_name"> 
- 
-       </div> 
+       <input type="email" required name="email"> 
+
+      </div> 
+
 
       <div class="inputBox"> 
         <label style="color: white">password</label> 
@@ -45,13 +45,9 @@
        <input type="password" required name="password">
 
       </div> 
+      
 
-      <div class="inputBox"> 
-        <label style="color: white">email</label> 
 
-        <input type="email" required name="email">
- 
-       </div>
 
       <div class="links">  <a href="{% url 'accounts:login' %}">login </a> 
 
@@ -70,7 +66,36 @@
    </div> 
 
   </section> <!-- partial --> 
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% for message in messages %}
+    {% if message.tags == 'success' %}
+      <!-- sweetalert js -->
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script>
+        var m = "{{ message }}";
+        Swal.fire({
+  position: "top-end",
+  icon: "success",
+  title: "{{message}}",
+  showConfirmButton: false,
+  timer: 3500
+});
+      </script>
+    {% else %}
+    <!-- sweetalert js -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      var m = "{{ message }}";
+      Swal.fire({
+  icon: "error",
+  title: "Oops...",
+  text: "{{message}}",
+  footer: "<a href='{% url 'home:index' %}'>redirect to home page</a>"
+});
+      
+    </script>
+    {% endif %}
+  {% endfor %}
 
   
 </body>

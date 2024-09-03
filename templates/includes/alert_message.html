@@ -10,10 +10,10 @@
   icon: "success",
   title: "{{message}}",
   showConfirmButton: false,
-  timer: 4000
+  timer: 3500
 });
       </script>
-    {% elif message.tags == "error" %}
+    {% else %}
     <!-- sweetalert js -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>

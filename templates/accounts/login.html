@@ -1,44 +1,95 @@
+
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
-    <link rel="stylesheet" href="{% static 'css/login.css' %}"/>
+  <meta charset="UTF-8">
+  <title>login  </title>
+  <link rel="stylesheet" href="{% static 'css/signup.css' %}">
+
 </head>
 <body>
-    <div class="container">
-        <div class="screen">
-            <div class="screen__content">
-                <form class="login" method="post" action="{% url 'accounts:login' %}">
-                    {% csrf_token %}
-                    <h4>login</h4>
-                    <div class="login__field">
-                        <i class="login__icon fas fa-user"></i>
-                        <input type="text" name="username" class="login__input" placeholder="User name / Email">
-                    </div>
-                    <div class="login__field">
-                        <i class="login__icon fas fa-lock"></i>
-                        <input type="password" name="password" class="login__input" placeholder="Password">
-                    </div>
-                    <button class="button login__submit" type="submit">
-                        Log In Now
-                    </button>				
-                </form>
-                <div class="social-login">
-                    <h3><a href="{% url 'accounts:signup' %}">sign up</a></h3>
-                    
-                </div>
-            </div>
-            <div class="screen__background">
-                <span class="screen__background__shape screen__background__shape4"></span>
-                <span class="screen__background__shape screen__background__shape3"></span>		
-                <span class="screen__background__shape screen__background__shape2"></span>
-                <span class="screen__background__shape screen__background__shape1"></span>
-            </div>		
-        </div>
-    </div>
-    
+
+
+
+ <body> <!-- partial:index.partial.html --> 
+
+  <section> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> 
+
+   <div class="signin"> 
+
+    <div class="content"> 
+
+     <h2>login</h2> 
+
+     <form class="form" method="post" action="{% url 'accounts:login' %}"> 
+        {% csrf_token %}
+
+      <div class="inputBox">
+        <label style="color: white">username/email</label> 
+
+       <input type="text" required name="username"> 
+
+      </div> 
+       
+       
+
+      <div class="inputBox"> 
+        <label style="color: white">password</label> 
+
+       <input type="password" required name="password">
+
+      </div> 
+
+
+      <div class="links">  <a href="{% url 'accounts:signup' %}">signup </a> 
+
+      </div> 
+
+      <div class="inputBox"> 
+
+       <button class="submit" type="submit">log in  </button> 
+
+      </div> 
+
+    </form> 
+
+    </div> 
+
+   </div> 
+
+  </section> <!-- partial --> 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  {% for message in messages %}
+      {% if message.tags == 'success' %}
+        <!-- sweetalert js -->
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+          var m = "{{ message }}";
+          Swal.fire({
+    position: "top-end",
+    icon: "success",
+    title: "{{message}}",
+    showConfirmButton: false,
+    timer: 3500
+  });
+        </script>
+      {% else %}
+      <!-- sweetalert js -->
+      <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script>
+        var m = "{{ message }}";
+        Swal.fire({
+    icon: "error",
+    title: "Oops...",
+    text: "{{message}}",
+    footer: "<a href='{% url 'home:index' %}'>redirect to home page</a>"
+  });
+        
+      </script>
+      {% endif %}
+    {% endfor %}
+
+  
 </body>
 </html>

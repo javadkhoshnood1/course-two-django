@@ -4,45 +4,60 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
+from django.contrib.auth.decorators import login_required
 
 def login_view(request):
     if request.method == "POST":
-        username = request.POST["username"]
-        password =request.POST["password"]
-        user = authenticate(request,username=username,password=password)
-        if user is not None:
-            login(request,user)
-            messages.success(request,"login successfully")
-            return redirect("/")
-            
-            
+       username = request.POST.get("username")
+       password = request.POST.get("password")
+       
+       if "@" in username:
+           user = User.objects.get(email=username)
+           user_auth = authenticate(request,username=user.username,password=password)
+           if user is not None and user_auth:
+               login(request,user)
+               messages.success(request,"login with email")
+               return redirect("/")
+           else:
+               messages.error(request,"email not found")
+       else:
+            user = authenticate(request,username=username,password=password)
+            if user is not None:
+               login(request,user)
+               messages.success(request,"login with username")
+               return redirect("/")
+            else:
+                messages.error(request,"user not found")
+        
+
+                
     return render(request,"accounts/login.html")
 
 
-
+@login_required
 def logout_view(request):
-    if request.user.is_authenticated:
-        logout(request)
-        messages.success(request,"logout is successfully")
-        return redirect("/")
+    logout(request)
+    messages.success(request,"logout is successfully")
     return redirect("/")
 
 
 def signup_view(request):
-    if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
-        email = request.POST["email"]
-        first_name = request.POST["first_name"]
-        new_user = User.objects.create(username=username,password=password,email=email,first_name=first_name)
-        if new_user is not None:
+    if not request.user.is_authenticated:
+        
+        if request.method == "POST":
+            email= request.POST.get("email")
+            username = request.POST.get("username")
+            password = request.POST.get("password")
             
-            login(request,new_user)
-            new_user.set_password(password)
-            new_user.save()
-            messages.success(request,"account created and you must be login ")
-            return redirect("/")
-        else:
-            messages.error(request,"account not created")
-            return redirect("/")
-    return render(request,"accounts/signup.html")
+            if email and password and username:
+                new_user = User.objects.create_user(username=username,email=email,password=password)
+                login(request,new_user)
+                messages.success(request,"accounts created")
+                return redirect("/")
+            else:
+                messages.error(request," please enter all fields")
+                
+        return render(request,"accounts/signup.html")    
+    else:       
+        return render(request,"accounts/signup.html")
