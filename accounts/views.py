@@ -6,7 +6,8 @@ from django.contrib.auth.models import User
 from django.urls import reverse,reverse_lazy
 from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
 from django.contrib.auth.decorators import login_required
-
+from random import randint
+from .models import CodeConfirm
 def login_view(request):
     if request.method == "POST":
        username = request.POST.get("username")
@@ -79,6 +80,10 @@ def reset_password_view(request):
                         user = User.objects.get(email=username)
                         if user is not None:
                                 messages.success(request,"send code in email / please enter new password")
+                                random_code = randint(1000,10000)
+                                new_code = CodeConfirm.objects.create(user=user,code=random_code)
+                                new_code.save()
+                                print(new_code.code)
                                 return redirect(f"/accounts/resetpassword/confirmcode/{user.username}")
                    except:
                         messages.error(request,"user with this email not found")
@@ -96,17 +101,26 @@ def reset_password_view(request):
 
 
 def confirm_code_view(request,username):
-    user = User.objects.get(username=username)
+    if request.method == "GET":
+        user = User.objects.get(username=username)
     if request.method == "POST":
-        
+        user = User.objects.get(username=username)
+        new_code = CodeConfirm.objects.get(user=user)
+        code = request.POST.get("code")
+        print(f"code {code}",f"new code  :{new_code.code}")
         password1 = request.POST.get("password1")
         password2 = request.POST.get("password2")
-        if user and password1 and password2:
-            if password1 == password2 :
-                user.set_password(password1)
-                user.save()
-                messages.success(request,"ok email and password")
-                return redirect("/")
+        if user and password1 and password2 and code:
+            if int(code) == new_code.code :
+                if password1 == password2 :
+                    user.set_password(password1)
+                    user.save()
+                    new_code.delete()
+                    messages.success(request,f"ok reset password {user.username}")
+                    return redirect("/")
+                else:
+                    messages.error(request,"password1 and password2 not same")
+    
             else:
-                messages.error(request,"password1 and password2 not same")
+                messages.error(request,"code confirm is not correct")        
     return render(request,"accounts/confirm_code.html" ,)
