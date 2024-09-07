@@ -7,6 +7,8 @@ from django.urls import reverse,reverse_lazy
 from django.contrib.auth.forms import AuthenticationForm,UserCreationForm
 from django.contrib.auth.decorators import login_required
 from random import randint
+from django.core.mail import EmailMessage, get_connection
+from django.conf import settings
 from .models import CodeConfirm
 def login_view(request):
     if request.method == "POST":
@@ -73,20 +75,18 @@ def reset_password_view(request):
     if not request.user.is_authenticated:
         if request.method == "POST":
             username = request.POST.get("username")
-           
+            print(username)
             if username:
                 if "@" in username:
-                   try :
                         user = User.objects.get(email=username)
-                        if user is not None:
-                                messages.success(request,"send code in email / please enter new password")
-                                random_code = randint(1000,10000)
-                                new_code = CodeConfirm.objects.create(user=user,code=random_code)
-                                new_code.save()
-                                print(new_code.code)
-                                return redirect(f"/accounts/resetpassword/confirmcode/{user.username}")
-                   except:
-                        messages.error(request,"user with this email not found")
+                        messages.success(request,"send code in email / please enter new password")
+                        random_code = randint(1000,10000)
+                        new_code = CodeConfirm.objects.create(user=user,code=random_code)
+                        new_code.save()
+                        send_email(new_code,user.email)
+                        print(new_code.code)
+                        return redirect(f"/accounts/resetpassword/confirmcode/{user.username}")
+                 
                 else:
                    
                     messages.error(request,"user with this username not found / please enter email")
@@ -124,3 +124,21 @@ def confirm_code_view(request,username):
             else:
                 messages.error(request,"code confirm is not correct")        
     return render(request,"accounts/confirm_code.html" ,)
+
+
+
+
+def send_email(random_code,email):  
+    with get_connection(  
+     host=settings.EMAIL_HOST, 
+     port=settings.EMAIL_PORT,  
+     username=settings.EMAIL_HOST_USER, 
+     password=settings.EMAIL_HOST_PASSWORD, 
+     use_tls=settings.EMAIL_USE_TLS  
+       ) as connection:  
+           subject = random_code
+           email_from = settings.EMAIL_HOST_USER  
+           recipient_list = [email, ]  
+           message = f"code confirm :{random_code}"
+           EmailMessage(subject, message, email_from, recipient_list, connection=connection).send()  
+ 
