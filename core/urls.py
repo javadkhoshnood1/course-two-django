@@ -15,13 +15,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf.urls.static import static
-from . import settings
+from core.settings import COMINGSOON,MEDIA_URL,MEDIA_ROOT
 from django.contrib.sitemaps.views import sitemap
 from website.sitemaps import StaticViewSitemap
 from blog.sitemaps import BlogSitemap
-
+from django.views.generic import TemplateView
 sitemaps = {
     'static': StaticViewSitemap,
     'blog' : BlogSitemap
@@ -40,4 +40,9 @@ urlpatterns = [
     path('robots.txt', include('robots.urls')),
 
 
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]+ static(MEDIA_URL, document_root=MEDIA_ROOT)
+
+if COMINGSOON:
+    urlpatterns.insert(
+        0, re_path(r"^", TemplateView.as_view(template_name="comingsoon.html"))
+    )
