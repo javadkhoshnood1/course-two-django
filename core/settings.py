@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-z8_3uvauhw7*rl==g@xcx%!r%ot+m8w9zzzh9-2+*ptcdfbfxk
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-COMINGSOON = True
+COMINGSOON = False
 
 ALLOWED_HOSTS = []
 
@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'django.contrib.staticfiles',
     'robots',
-    'taggit',
+    'taggit',   
+    'compressor',
     # my_apps
     'home',
     'blog',
@@ -93,6 +94,12 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)
 
 
 # Password validation
@@ -131,7 +138,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-
+COMPRESS_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
